@@ -1,0 +1,9 @@
+@model TicketStatus
+@{
+    string css = "bg-secondary";
+    if (Model == TicketStatus.Open) { css = "bg-primary"; }
+    else if (Model == TicketStatus.InProgress) { css = "bg-info text-dark"; }
+    else if (Model == TicketStatus.Resolved) { css = "bg-success"; }
+    else if (Model == TicketStatus.Closed) { css = "bg-dark"; }
+}
+<span class="badge @css">@Model</span>

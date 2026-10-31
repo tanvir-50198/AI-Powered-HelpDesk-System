@@ -1,0 +1,36 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Admin dashboard";
+}
+
+<h2 class="mb-3">Admin dashboard</h2>
+
+<partial name="_StatusCards" model="Model.StatusCounts" />
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm"><div class="card-body">
+            <div class="display-6">@Model.TotalUsers</div><div class="text-muted">Users</div>
+        </div></div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm"><div class="card-body">
+            <div class="display-6">@Model.UnassignedTickets</div><div class="text-muted">Tickets without an agent</div>
+        </div></div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm"><div class="card-body">
+            <div class="display-6">@Model.ActiveConversations</div><div class="text-muted">Chat conversations</div>
+        </div></div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <span>Newest tickets that need an agent</span>
+        <a asp-controller="Tickets" asp-action="Index" asp-route-onlyUnassigned="true">Show all unassigned</a>
+    </div>
+    <div class="card-body">
+        <partial name="_TicketTable" model="Model.Tickets" />
+    </div>
+</div>

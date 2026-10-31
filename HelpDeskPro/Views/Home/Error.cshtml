@@ -1,0 +1,13 @@
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="alert alert-danger">
+    <h4>Something went wrong</h4>
+    <p>Sorry, an unexpected error happened. Please try again.</p>
+    @if (ViewBag.CorrelationId != null)
+    {
+        <p class="mb-0 small">If the problem continues, send this code to support: <strong>@ViewBag.CorrelationId</strong></p>
+    }
+</div>
+<a class="btn btn-primary" asp-controller="Home" asp-action="Index">Back to start</a>

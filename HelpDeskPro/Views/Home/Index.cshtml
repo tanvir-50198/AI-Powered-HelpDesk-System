@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "Welcome";
+}
+
+<div class="p-5 mb-4 bg-light rounded-3 text-center">
+    <h1 class="display-5 fw-bold">HelpDesk Pro</h1>
+    <p class="lead">Support tickets with an AI assistant that answers from approved knowledge articles, shows its sources, and hands you over to a human when it is not sure.</p>
+    <a class="btn btn-primary btn-lg me-2" asp-controller="Account" asp-action="Login">Login</a>
+    <a class="btn btn-outline-primary btn-lg" asp-controller="Account" asp-action="Register">Create a customer account</a>
+</div>
+
+<div class="card">
+    <div class="card-header">Demo accounts (created automatically)</div>
+    <div class="card-body">
+        <table class="table table-sm mb-0">
+            <thead><tr><th>Role</th><th>Email</th><th>Password</th></tr></thead>
+            <tbody>
+                <tr><td>Admin</td><td>admin@helpdesk.com</td><td>Admin@123</td></tr>
+                <tr><td>Support agent</td><td>agent@helpdesk.com</td><td>Agent@123</td></tr>
+                <tr><td>Customer</td><td>customer@helpdesk.com</td><td>Customer@123</td></tr>
+            </tbody>
+        </table>
+        <p class="text-muted small mt-2 mb-0">These accounts are for local testing only. Remove them before any real use.</p>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+@model TicketPriority
+@{
+    string css = "bg-secondary";
+    if (Model == TicketPriority.Medium) { css = "bg-warning text-dark"; }
+    else if (Model == TicketPriority.High) { css = "bg-orange text-white"; }
+    else if (Model == TicketPriority.Urgent) { css = "bg-danger"; }
+}
+<span class="badge @css">@Model</span>

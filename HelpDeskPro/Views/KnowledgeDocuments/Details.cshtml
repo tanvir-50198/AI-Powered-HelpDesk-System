@@ -1,0 +1,23 @@
+@model KnowledgeDocument
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<a asp-action="Index" class="small">&laquo; Back to knowledge base</a>
+<h2 class="my-2">@Model.Title</h2>
+<p class="text-muted">
+    @Model.Category | @Model.Audience | Approval: @Model.ApprovalStatus | Indexing: @Model.ProcessingStatus |
+    Version @Model.Version | @Model.Chunks.Count chunk(s)
+</p>
+
+@foreach (DocumentChunk chunk in Model.Chunks)
+{
+    <div class="card mb-2">
+        <div class="card-header small">
+            Chunk @chunk.ChunkIndex
+            @if (!string.IsNullOrEmpty(chunk.SectionLabel)) { <span> - @chunk.SectionLabel</span> }
+            <span class="text-muted"> (@chunk.EmbeddingModel)</span>
+        </div>
+        <div class="card-body" style="white-space: pre-wrap;">@chunk.Content</div>
+    </div>
+}

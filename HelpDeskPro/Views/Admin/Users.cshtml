@@ -1,0 +1,36 @@
+@model List<UserListItemViewModel>
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h2 class="mb-3">Users</h2>
+<p class="text-muted">New people register as customers. Change a role here to make someone a support agent or an admin.</p>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead><tr><th>Email</th><th>Name</th><th>Registered</th><th>Role</th></tr></thead>
+            <tbody>
+                @foreach (UserListItemViewModel user in Model)
+                {
+                    <tr>
+                        <td>@user.Email</td>
+                        <td>@user.FullName</td>
+                        <td>@user.CreatedAt.ToString("dd MMM yyyy")</td>
+                        <td>
+                            <form asp-action="ChangeRole" method="post" class="d-flex gap-2">
+                                <input type="hidden" name="userId" value="@user.Id" />
+                                <select name="role" class="form-select form-select-sm" style="width: 140px;">
+                                    <option value="Customer" selected="@(user.Role == "Customer")">Customer</option>
+                                    <option value="Agent" selected="@(user.Role == "Agent")">Agent</option>
+                                    <option value="Admin" selected="@(user.Role == "Admin")">Admin</option>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

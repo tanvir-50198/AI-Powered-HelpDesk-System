@@ -1,0 +1,36 @@
+@model List<Ticket>
+
+@if (Model.Count == 0)
+{
+    <p class="text-muted mb-0">No tickets to show.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Assigned agent</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Ticket ticket in Model)
+                {
+                    <tr>
+                        <td>@ticket.Id</td>
+                        <td><a asp-controller="Tickets" asp-action="Details" asp-route-id="@ticket.Id">@ticket.Title</a></td>
+                        <td><partial name="_StatusBadge" model="ticket.Status" /></td>
+                        <td><partial name="_PriorityBadge" model="ticket.Priority" /></td>
+                        <td>@(ticket.AssignedAgent != null ? ticket.AssignedAgent.Email : "-")</td>
+                        <td>@ticket.CreatedAt.ToString("dd MMM yyyy HH:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

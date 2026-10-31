@@ -1,0 +1,43 @@
+@model HelpDeskPro.DTOs.UploadDocumentRequest
+@{
+    ViewData["Title"] = "Upload document";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="mb-3">Upload a knowledge document</h3>
+                <form asp-action="Upload" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="File" class="form-label">File (PDF, DOCX, TXT or MD, maximum 5 MB)</label>
+                        <input asp-for="File" type="file" class="form-control" accept=".pdf,.docx,.txt,.md" />
+                        <span asp-validation-for="File" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label">Title (optional - the file name is used if empty)</label>
+                        <input asp-for="Title" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Category" class="form-label"></label>
+                        <input asp-for="Category" class="form-control" placeholder="FAQ, Policy, Guide..." />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Audience" class="form-label"></label>
+                        <select asp-for="Audience" class="form-select">
+                            <option value="Customer">Customer - visible to the customer chatbot</option>
+                            <option value="Agent">Agent - agents and admins only</option>
+                            <option value="Internal">Internal - admins only</option>
+                        </select>
+                    </div>
+
+                    <p class="text-muted small">After upload the document is indexed but stays a <strong>Draft</strong>. Approve it on the next page so the chatbot may use it.</p>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                    <a class="btn btn-link" asp-action="Index">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

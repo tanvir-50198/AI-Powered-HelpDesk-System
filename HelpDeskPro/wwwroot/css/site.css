@@ -1,0 +1,52 @@
+body {
+    background-color: #f5f7fa;
+}
+
+/* Bootstrap has no orange badge, so we add one for "High" priority */
+.bg-orange {
+    background-color: #fd7e14;
+}
+
+.chat-messages {
+    height: 480px;
+    overflow-y: auto;
+    background-color: #ffffff;
+}
+
+.chat-row {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.chat-row-user {
+    justify-content: flex-end;
+}
+
+.chat-row-bot {
+    justify-content: flex-start;
+}
+
+.chat-bubble {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 12px;
+}
+
+.chat-user {
+    background-color: #0d6efd;
+    color: #ffffff;
+}
+
+.chat-bot {
+    background-color: #eef1f5;
+    color: #212529;
+}
+
+.chat-error {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.chat-text {
+    white-space: pre-wrap;
+}

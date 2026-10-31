@@ -1,0 +1,61 @@
+@model CreateTicketFromChatViewModel
+@{
+    ViewData["Title"] = "Create ticket from chat";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="mb-3">Talk to a human</h3>
+                <p class="text-muted">We prepared a summary of your chat. Please read it, change it if needed, and confirm. Nothing is sent before you confirm.</p>
+
+                <form asp-action="CreateTicket" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ConversationId" />
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="CategoryId" class="form-label"></label>
+                            <select asp-for="CategoryId" class="form-select">
+                                @foreach (Category category in Model.Categories)
+                                {
+                                    <option value="@category.Id">@category.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Priority" class="form-label"></label>
+                            <select asp-for="Priority" class="form-select">
+                                @foreach (TicketPriority priority in Enum.GetValues(typeof(TicketPriority)))
+                                {
+                                    <option value="@priority">@priority</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="8"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input asp-for="Confirmed" class="form-check-input" />
+                        <label asp-for="Confirmed" class="form-check-label"></label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create ticket</button>
+                    <a class="btn btn-link" asp-action="Index" asp-route-id="@Model.ConversationId">Back to chat</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

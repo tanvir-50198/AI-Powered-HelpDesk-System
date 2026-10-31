@@ -1,0 +1,102 @@
+@model HelpDeskPro.DTOs.AdminSummaryDto
+@{
+    ViewData["Title"] = "Reports";
+    int maxStatus = 1;
+    foreach (HelpDeskPro.DTOs.StatusCountDto item in Model.StatusDistribution)
+    {
+        if (item.Count > maxStatus) { maxStatus = item.Count; }
+    }
+}
+
+<h2 class="mb-3">Reports</h2>
+<p class="text-muted">All numbers are calculated from the database right now.</p>
+
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">Tickets by status (total @Model.TotalTickets)</div>
+            <div class="card-body">
+                @foreach (HelpDeskPro.DTOs.StatusCountDto item in Model.StatusDistribution)
+                {
+                    int percent = (int)(100.0 * item.Count / maxStatus);
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between small"><span>@item.Status</span><span>@item.Count</span></div>
+                        <div class="progress"><div class="progress-bar" style="width: @(percent)%"></div></div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">Created vs resolved (last 7 days)</div>
+            <div class="table-responsive">
+                <table class="table table-sm mb-0">
+                    <thead><tr><th>Day</th><th>Created</th><th>Resolved</th></tr></thead>
+                    <tbody>
+                        @foreach (HelpDeskPro.DTOs.DailyCountDto day in Model.Last7Days)
+                        {
+                            <tr><td>@day.Day</td><td>@day.Created</td><td>@day.Resolved</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card h-100">
+            <div class="card-header">Overdue tickets (DEMO SLA)</div>
+            <div class="card-body">
+                <div class="display-6">@Model.OverdueTickets</div>
+                <div class="text-muted small">Open or in-progress for more than @Model.DemoSlaHours hours. This is a demo target from appsettings.json, not a real company promise.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card h-100">
+            <div class="card-header">AI feedback</div>
+            <div class="card-body">
+                <div class="display-6">@Model.HelpfulRatePercent %</div>
+                <div class="text-muted small">helpful (@Model.HelpfulFeedback helpful, @Model.NotHelpfulFeedback not helpful)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card h-100">
+            <div class="card-header">Escalation rate</div>
+            <div class="card-body">
+                <div class="display-6">@Model.EscalationRatePercent %</div>
+                <div class="text-muted small">@Model.EscalatedConversations of @Model.TotalConversations conversations became a ticket</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">Unanswered questions (the assistant had no good source) - @Model.FallbackAnswers in total</div>
+            <div class="table-responsive">
+                <table class="table table-sm mb-0">
+                    <thead><tr><th>Question</th><th>Asked</th></tr></thead>
+                    <tbody>
+                        @foreach (HelpDeskPro.DTOs.UnansweredQuestionDto item in Model.UnansweredQuestions)
+                        {
+                            <tr><td>@item.Question</td><td>@item.AskedAt.ToString("dd MMM yyyy HH:mm")</td></tr>
+                        }
+                        @if (Model.UnansweredQuestions.Count == 0)
+                        {
+                            <tr><td colspan="2" class="text-muted">None yet.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer small text-muted">
+                Knowledge base: @Model.ApprovedDocuments approved and indexed documents, @Model.FailedDocuments failed.
+                Retrieval relevance and citation correctness are measured by the automated tests (see README).
+            </div>
+        </div>
+    </div>
+</div>

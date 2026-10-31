@@ -1,0 +1,18 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Agent dashboard";
+}
+
+<h2 class="mb-3">Agent dashboard</h2>
+
+<partial name="_StatusCards" model="Model.StatusCounts" />
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <span>My assigned tickets (most urgent first)</span>
+        <a asp-controller="Tickets" asp-action="Index">Show all</a>
+    </div>
+    <div class="card-body">
+        <partial name="_TicketTable" model="Model.Tickets" />
+    </div>
+</div>

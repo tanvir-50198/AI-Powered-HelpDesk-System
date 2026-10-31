@@ -1,0 +1,85 @@
+@model ChatPageViewModel
+@{
+    ViewData["Title"] = "AI assistant";
+    int selectedId = Model.Selected != null ? Model.Selected.Id : 0;
+}
+
+<div class="row">
+    <!-- Conversation list -->
+    <div class="col-md-3 mb-3">
+        <a class="btn btn-primary w-100 mb-2" asp-action="Index">+ New chat</a>
+        <div class="list-group">
+            @foreach (ChatConversation conversation in Model.Conversations)
+            {
+                <a class="list-group-item list-group-item-action @(conversation.Id == selectedId ? "active" : "")"
+                   asp-action="Index" asp-route-id="@conversation.Id">
+                    <div class="text-truncate">@conversation.Title</div>
+                    <small>@conversation.UpdatedAt.ToString("dd MMM HH:mm")</small>
+                </a>
+            }
+            @if (Model.Conversations.Count == 0)
+            {
+                <div class="list-group-item text-muted">No conversations yet</div>
+            }
+        </div>
+    </div>
+
+    <!-- Chat window -->
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Ask a question about HelpDesk Pro</span>
+                <span id="ticket-link-area">
+                    @if (Model.Selected != null && Model.Selected.LinkedTicketId.HasValue)
+                    {
+                        <a class="btn btn-sm btn-outline-success" asp-controller="Tickets" asp-action="Details" asp-route-id="@Model.Selected.LinkedTicketId.Value">Ticket #@Model.Selected.LinkedTicketId.Value</a>
+                    }
+                    else if (Model.Selected != null)
+                    {
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="CreateTicket" asp-route-id="@Model.Selected.Id">Talk to a human (create ticket)</a>
+                    }
+                </span>
+            </div>
+
+            <div id="chat-messages" class="card-body chat-messages" data-conversation-id="@selectedId">
+                @if (Model.Selected == null || Model.Selected.Messages.Count == 0)
+                {
+                    <p id="chat-empty" class="text-muted">Hello! Ask me anything, for example: "How do I reset my password?"</p>
+                }
+                else
+                {
+                    @foreach (ChatMessage message in Model.Selected.Messages)
+                    {
+                        <div class="chat-row @(message.Role == "User" ? "chat-row-user" : "chat-row-bot")">
+                            <div class="chat-bubble @(message.Role == "User" ? "chat-user" : "chat-bot")">
+                                <div class="chat-text">@message.Content</div>
+                                @if (message.Role == "Assistant" && message.Sources.Count > 0)
+                                {
+                                    <div class="chat-sources small mt-2">
+                                        <strong>Sources:</strong>
+                                        @foreach (ChatSource source in message.Sources)
+                                        {
+                                            <div>&bull; @source.DisplayTitle@(string.IsNullOrEmpty(source.SectionLabel) ? "" : " > " + source.SectionLabel)</div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <div class="card-footer">
+                <form id="chat-form" class="input-group">
+                    <input id="chat-input" type="text" class="form-control" maxlength="1000" placeholder="Type your question..." autocomplete="off" />
+                    <button id="chat-send" type="submit" class="btn btn-primary">Send</button>
+                </form>
+                <div class="form-text">The assistant answers only from approved knowledge articles. Answers can still be wrong - please check the sources.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/chat.js"></script>
+}

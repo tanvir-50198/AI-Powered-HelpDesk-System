@@ -1,0 +1,24 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "My dashboard";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>My dashboard</h2>
+    <div>
+        <a class="btn btn-primary" asp-controller="Tickets" asp-action="Create">New ticket</a>
+        <a class="btn btn-outline-primary" asp-controller="Chat" asp-action="Index">Ask the AI assistant</a>
+    </div>
+</div>
+
+<partial name="_StatusCards" model="Model.StatusCounts" />
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <span>My latest tickets</span>
+        <a asp-controller="Tickets" asp-action="Index">Show all</a>
+    </div>
+    <div class="card-body">
+        <partial name="_TicketTable" model="Model.Tickets" />
+    </div>
+</div>
